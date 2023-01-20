@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Details</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      
+</head>
+<body>
+    <div class="container">
+        <h1>Assignment Details:</h1>
+        <a class="waves-effect waves-light btn" href="list.html">
+            <i class="material-icons left">arrow_back</i>
+            Return to assignment list
+        </a>
+        <table class="striped highlight">
+            <tbody>
+                <tr>
+                    <th>Assignment:</th><td>Work 1</td>
+                </tr>
+                <tr>
+                    <th>Class:</th><td>AP Comp Sci</td>
+                </tr>
+                <tr>
+                    <th>Due Date:</th><td>1/1/1</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section" id="stuffControls">
+            <a class="waves-effect waves-light btn-large orange accent-4 modal-trigger" href="#stuffEdit">
+                <i class="material-icons right">edit</i>
+                Edit
+            </a>
+            <a class="waves-effect waves-light btn-large red right">
+                <i class="material-icons right">delete</i>
+                Delete
+            </a>
+        </div>
+
+        <div class="modal" id="stuffEdit">
+
+            <div class="modal-content">
+
+                <h2>Edit item:</h2>
+                <form>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="nameInput">Assignment Name:</label>
+                            <input type="text" name="name" id="nameInput" class="validate" data-length="32">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="classNameInput">Class Name:</label>
+                            <input type="text" name="className" id="classNameInput">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="dueDateInput">Due Date:</label>
+                            <input type="text" class="datepicker" id="dueDateInput">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="descriptionInput">Assignment Description:</label>
+                            <input type="text" name="description" id="descriptionInput" data-length="100">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn waves-effect waves-light " type="submit">
+                            <i class="material-icons right">send</i>
+                            Submit
+                        </button>
+                        <button class="modal-close waves-effect waves-green btn-flat">Never Mind</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    
+    <!-- initialize Materialize elements -->
+    <script> M.AutoInit();</script>
+</body>
+</html>

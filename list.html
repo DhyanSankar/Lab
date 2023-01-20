@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Manager</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Assignments:</h1>
+        <a class="waves-effect waves-light btn" href="index.html">
+            <i class="material-icons left">arrow_back</i>
+            Return to home page
+        </a>
+            <table class="striped highlight centered">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Due Date</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>Work 1</td>
+                    <td>AP Comp Sci</td>
+                    <td>1/1/1</td>
+                    <td>
+                        <a class="waves-effect waves-light btn" href="item.html">
+                            Info/Edit
+                            <i class="material-icons right">edit</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="waves-effect waves-light btn #f44336 red">
+                            Delete
+                            <i class="material-icons right">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Work 2</td>
+                    <td>AP Comp Sci</td>
+                    <td>1/1/1</td>
+                    <td>
+                        <a class="waves-effect waves-light btn" href="item.html">
+                            Info/Edit
+                            <i class="material-icons right">edit</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="waves-effect waves-light btn #f44336 red">
+                            Delete
+                            <i class="material-icons right">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Work 3</td>
+                    <td>AP Comp Sci</td>
+                    <td>1/1/1</td>
+                    <td>
+                        <a class="waves-effect waves-light btn" href="item.html">
+                            Info/Edit
+                            <i class="material-icons right">edit</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="waves-effect waves-light btn #f44336 red">
+                            Delete
+                            <i class="material-icons right">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        <h1>Add Assignments:</h1>
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s4">
+                        <label for="nameInput">Assignment Name:</label>
+                        <input type="text" name="name" id="nameInput" class="validate" data-length="32">
+                    </div>
+                    <div class="input-field col s4">
+                        <label for="classNameInput">Class Name:</label>
+                        <input type="text" name="className" id="classNameInput">
+                    </div>
+                    <div class="input-field col s4">
+                        <label for="dueDateInput">Due Date:</label>
+                        <input type="text" class="datepicker" id="dueDateInput">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="descriptionInput">Assignment Description:</label>
+                        <input type="text" name="description" id="descriptionInput" data-length="100">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <a class="waves-effect waves-light btn" href="item.html">
+            Submit
+            <i class="material-icons right">send</i>
+        </a>
+    </div>
+</body>
+</html>
