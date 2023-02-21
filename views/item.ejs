@@ -23,13 +23,13 @@
         <table class="striped highlight">
             <tbody>
                 <tr>
-                    <th>Assignment:</th><td>Work 1</td>
+                    <th>Assignment:</th><td><%= item %></td>
                 </tr>
                 <tr>
-                    <th>Class:</th><td>AP Comp Sci</td>
+                    <th>Class:</th><td><%= quantity %></td>
                 </tr>
                 <tr>
-                    <th>Due Date:</th><td>1/1/1</td>
+                    <th>Due Date:</th><td><%= description %></td>
                 </tr>
             </tbody>
         </table>
@@ -39,9 +39,8 @@
                 <i class="material-icons right">edit</i>
                 Edit
             </a>
-            <a class="waves-effect waves-light btn-large red right" href="/stuff">
-                <i class="material-icons right">delete</i>
-                Delete
+            <a class="btn-large waves-effect waves-light red right"  href="/stuff/item/<%= id %>/delete">
+                <i class="material-icons right">delete</i>Delete
             </a>
         </div>
 
@@ -50,19 +49,19 @@
             <div class="modal-content">
 
                 <h2>Edit item:</h2>
-                <form>
+                <form method="post" action="/stuff/item/<%= id%>"> <!-- default action is the page's URL -->
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="nameInput">Assignment Name:</label>
-                            <input type="text" name="name" id="nameInput" class="validate" data-length="32">
+                            <input type="text" name="name" id="nameInput" class="validate" data-length="32" value="<%= item%>" required>
                         </div>
                         <div class="input-field col s6">
                             <label for="classNameInput">Class Name:</label>
-                            <input type="text" name="className" id="classNameInput">
+                            <input type="number" name="quantity" id="quantityInput" value=<%= quantity%> required>
                         </div>
                         <div class="input-field col s6">
                             <label for="dueDateInput">Due Date:</label>
-                            <input type="text" class="datepicker" id="dueDateInput">
+                            <input type="text" name="description" id="descriptionInput" data-length="100" value="<%= description%>">
                         </div>
                     </div>
                     <div class="row">

@@ -31,62 +31,25 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>Work 1</td>
-                    <td>AP Comp Sci</td>
-                    <td>1/1/1</td>
-                    <td>
-                        <a class="btn-small waves-effect waves-light" href="/stuff/item">
-                            Info/Edit
-                            <i class="material-icons right">edit</i>
-                        </a>
-                    </td>
-                    <td>
-                        <a class="waves-effect waves-light btn #f44336 red">
-                            Delete
-                            <i class="material-icons right">delete</i>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Work 2</td>
-                    <td>AP Comp Sci</td>
-                    <td>1/1/1</td>
-                    <td>
-                        <a class="btn-small waves-effect waves-light" href="/stuff/item">
-                            Info/Edit
-                            <i class="material-icons right">edit</i>
-                        </a>
-                    </td>
-                    <td>
-                        <a class="waves-effect waves-light btn #f44336 red">
-                            Delete
-                            <i class="material-icons right">delete</i>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Work 3</td>
-                    <td>AP Comp Sci</td>
-                    <td>1/1/1</td>
-                    <td>
-                        <a class="btn-small waves-effect waves-light" href="/stuff/item">
-                            Info/Edit
-                            <i class="material-icons right">edit</i>
-                        </a>
-                    </td>
-                    <td>
-                        <a class="waves-effect waves-light btn #f44336 red">
-                            Delete
-                            <i class="material-icons right">delete</i>
-                        </a>
-                    </td>
-                </tr>
+                    <% for (let i = 0; i < inventory.length; i++) { %>
+                    <tr>
+                        <td><%= inventory[i].item %></td>
+                        <td><%= inventory[i].quantity %></td>
+                        <td>
+                            <a class="btn-small waves-effect waves-light" href=<%= "/stuff/item/" + inventory[i].id %> ><i
+                                    class="material-icons right">edit</i>Info/Edit</a>
+                            <a class="btn-small waves-effect waves-light red" href="/stuff/item/<%= inventory[i].id %>/delete">
+                                <i class="material-icons right">delete</i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
         <h1>Add Assignments:</h1>
         <div class="row">
-            <form class="col s12">
+            <form method="post" action="/stuff">
                 <div class="row">
                     <div class="input-field col s4">
                         <label for="nameInput">Assignment Name:</label>
