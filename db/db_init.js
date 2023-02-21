@@ -1,40 +1,27 @@
 // (Re)Sets up the database, including a little bit of sample data
 const db = require("./db_connection");
 
-/**** Delete existing table, if any ****/
+/**** Delete *CONTENTS OF* existing table (but not table itself) ****/
 
-const drop_stuff_table_sql = "DROP TABLE IF EXISTS `stuff`;"
+const delete_stuff_table_sql = "DELETE FROM assignment;"
 
-db.execute(drop_stuff_table_sql);
-
-/**** Create "stuff" table (again)  ****/
-
-const create_stuff_table_sql = `
-    CREATE TABLE stuff (
-        id INT NOT NULL AUTO_INCREMENT,
-        item VARCHAR(45) NOT NULL,
-        quantity INT NOT NULL,
-        description VARCHAR(150) NULL,
-        PRIMARY KEY (id)
-    );
-`
-db.execute(create_stuff_table_sql);
+db.execute(delete_stuff_table_sql);
 
 /**** Create some sample items ****/
 
 const insert_stuff_table_sql = `
-    INSERT INTO stuff 
-        (item, quantity, description) 
+    INSERT INTO assignment 
+        (assignment_name, assignment_class, assignment_date) 
     VALUES 
         (?, ?, ?);
 `
-db.execute(insert_stuff_table_sql, ['Widgets', '5', 'Widgets are cool! You can do ... so many... different things... with them...']);
+db.execute(insert_stuff_table_sql, ['Assignment 1', 'AP Comp Sci', '2023-01-31']);
 
-db.execute(insert_stuff_table_sql, ['Gizmos', '100', null]);
+db.execute(insert_stuff_table_sql, ['Assignment 2', 'AP Comp Sci', '2023-01-31']);
 
-db.execute(insert_stuff_table_sql, ['Thingamajig', '12345', 'Not to be confused with a Thingamabob']);
+db.execute(insert_stuff_table_sql, ['Assignment 3', 'AP Comp Sci', '2023-01-31']);
 
-db.execute(insert_stuff_table_sql, ['Thingamabob', '54321', 'Not to be confused with a Thingamajig']);
+db.execute(insert_stuff_table_sql, ['Assignment 4', 'AP Comp Sci', '2023-01-31']);
 
 
 /**** Read the sample items inserted ****/
