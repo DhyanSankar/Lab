@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="stylesheets/materialize.min.css">
 
-    <script src="javascripts/materialize.min.js"></script>
+    <script src="/javascripts/materialize.min.js"></script>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -33,12 +33,13 @@
                 <tbody>
                     <% for (let i = 0; i < inventory.length; i++) { %>
                     <tr>
-                        <td><%= inventory[i].item %></td>
-                        <td><%= inventory[i].quantity %></td>
+                        <td><%= inventory[i].assignment_name %></td>
+                        <td><%= inventory[i].assignment_class %></td>
+                        <td><%= inventory[i].assignment_date %></td>
                         <td>
-                            <a class="btn-small waves-effect waves-light" href=<%= "/stuff/item/" + inventory[i].id %> ><i
+                            <a class="btn-small waves-effect waves-light" href=<%= "/stuff/item/" + inventory[i].assignment_id %> ><i
                                     class="material-icons right">edit</i>Info/Edit</a>
-                            <a class="btn-small waves-effect waves-light red" href="/stuff/item/<%= inventory[i].id %>/delete">
+                            <a class="btn-small waves-effect waves-light red" href="/stuff/item/<%= inventory[i].assignment_id %>/delete">
                                 <i class="material-icons right">delete</i>
                                 Delete
                             </a>
@@ -53,29 +54,31 @@
                 <div class="row">
                     <div class="input-field col s4">
                         <label for="nameInput">Assignment Name:</label>
-                        <input type="text" name="name" id="nameInput" class="validate" data-length="32">
+                        <input type="text" name="assignment_name" id="name" class="validate" data-length="32">
                     </div>
                     <div class="input-field col s4">
                         <label for="classNameInput">Class Name:</label>
-                        <input type="text" name="className" id="classNameInput">
+                        <input type="text" name="assignment_class" id="classNameInput">
                     </div>
                     <div class="input-field col s4">
                         <label for="dueDateInput">Due Date:</label>
-                        <input type="text" class="datepicker" id="dueDateInput">
+                        <input type="text" name="assignment_date" class="datepicker" id="dueDateInput">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label for="descriptionInput">Assignment Description:</label>
-                        <input type="text" name="description" id="descriptionInput" data-length="100">
+                        <input type="text" name="assignment_description" id="descriptionInput" data-length="100">
                     </div>
-                </div>
+                </div> 
+                
+                <button class="btn-small waves-effect waves-light" type="submit">
+                    Submit
+                    <i class="material-icons right">send</i>
+                </button>
             </form>
         </div>
-        <a class="btn-small waves-effect waves-light" href="/stuff/item">
-            Submit
-            <i class="material-icons right">send</i>
-        </a>
+       
     </div>
 </body>
 </html>

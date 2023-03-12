@@ -27,7 +27,7 @@ app.get( "/", ( req, res ) => {
 // define a route for the stuff inventory page
 const read_stuff_all_sql = `
     SELECT 
-        id, item, quantity
+        assignment_id, assignment_name, assignment_class, assignment_date
     FROM
         stuff
 `
@@ -44,22 +44,22 @@ app.get( "/stuff", ( req, res ) => {
 // define a route for the item detail page
 const read_stuff_item_sql = `
     SELECT 
-        id, item, quantity, description 
+        assignment_id, assignment_name, assignment_class, assignment_date, assignment_description 
     FROM
         stuff
     WHERE
-        id = ?
+        assignment_id = ?
 `
-app.get( "/stuff/item/:id", ( req, res ) => {
-    db.execute(read_stuff_item_sql, [req.params.id], (error, results) => {
+app.get( "/stuff/item/:assignment_id", ( req, res ) => {
+    db.execute(read_stuff_item_sql, [req.params.assignment_id], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else if (results.length == 0)
-            res.status(404).send(`No item found with id = "${req.params.id}"` ); // NOT FOUND
+            res.status(404).send(`No item found with assignment_id = "${req.params.assignment_id}"` ); // NOT FOUND
         else {
             let data = results[0]; // results is still an array
             // data's object structure: 
-            //  { id: ____, item: ___ , quantity:___ , description: ____ }
+            //  { assignment_id: ____, assignment_name: ___ , assignment_class:___ , assignment_description: ____ }
             res.render('item', data);
         }
     });
@@ -71,10 +71,10 @@ const delete_item_sql = `
     FROM
         stuff
     WHERE
-        id = ?
+        assignment_id = ?
 `
-app.get("/stuff/item/:id/delete", ( req, res ) => {
-    db.execute(delete_item_sql, [req.params.id], (error, results) => {
+app.get("/stuff/item/:assignment_id/delete", ( req, res ) => {
+    db.execute(delete_item_sql, [req.params.assignment_id], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
@@ -88,18 +88,19 @@ const update_item_sql = `
     UPDATE
         stuff
     SET
-        item = ?,
-        quantity = ?,
-        description = ?
+        assignment_name = ?,
+        assignment_class = ?,
+        assignment_date = ?
+        assignment_description = ?
     WHERE
-        id = ?
+        assignment_id = ?
 `
-app.post("/stuff/item/:id", ( req, res ) => {
-    db.execute(update_item_sql, [req.body.name, req.body.quantity, req.body.description, req.params.id], (error, results) => {
+app.post("/stuff/item/:assignment_id", ( req, res ) => {
+    db.execute(update_item_sql, [req.body.assignment_name, req.body.assignment_class, req.body.assignment_date, req.body.assignment_description, req.params.assignment_id], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
-            res.redirect(`/stuff/item/${req.params.id}`);
+            res.redirect(`/stuff/item/${req.params.assignment_id}`);
         }
     });
 })
@@ -107,12 +108,12 @@ app.post("/stuff/item/:id", ( req, res ) => {
 // define a route for item CREATE
 const create_item_sql = `
     INSERT INTO stuff
-        (item, quantity)
+        (assignment_name, assignment_class, assignment_date, assignment_description)
     VALUES
-        (?, ?)
+        (?, ?, ?, ?)
 `
 app.post("/stuff", ( req, res ) => {
-    db.execute(create_item_sql, [req.body.name, req.body.quantity], (error, results) => {
+    db.execute(create_item_sql, [req.body.assignment_name, req.body.assignment_class, req.body.assignment_date, req.body.assignment_description], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {

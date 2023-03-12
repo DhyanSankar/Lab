@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <script src="/javascripts/materialize.min.js"></script>
+    <script src="javascripts/materialize.min.js"></script>
     
     <link rel="stylesheet" href="/stylesheets/stuffStyle.css">
 </head>
@@ -23,58 +23,59 @@
         <table class="striped highlight">
             <tbody>
                 <tr>
-                    <th>Assignment:</th><td><%= assignment_name %></td>
+                    <th>Assignment:</th><td><%= item %></td>
                 </tr>
                 <tr>
-                    <th>Class:</th><td><%= assignment_class %></td>
+                    <th>Class:</th><td><%= quantity %></td>
                 </tr>
                 <tr>
-                    <th>Due Date:</th><td><%= assignment_date %></td>
+                    <th>Due Date:</th><td><%= description %></td>
                 </tr>
             </tbody>
         </table>
 
         <div class="section" id="stuffControls">
-            <a class="btn-large waves-effect waves-light orange left modal-trigger" href="#stuffEdit">
-                <i class="material-icons right">edit</i>Edit
+            <a class="waves-effect waves-light btn-large orange accent-4 modal-trigger" href="#stuffEdit">
+                <i class="material-icons right">edit</i>
+                Edit
             </a>
-            <a class="btn-large waves-effect waves-light red right"  href="/stuff/item/<%= assignment_id %>/delete" %>>
+            <a class="btn-large waves-effect waves-light red right"  href="/stuff/item/<%= id %>/delete">
                 <i class="material-icons right">delete</i>Delete
             </a>
         </div>
-
 
         <div class="modal" id="stuffEdit">
 
             <div class="modal-content">
 
                 <h2>Edit item:</h2>
-                <form method="post" action="/stuff/item/<%= assignment_id%>"> <!-- default action is the page's URL --> 
+                <form method="post" action="/stuff/item/<%= id%>"> <!-- default action is the page's URL -->
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="nameInput">Assignment Name:</label>
-                            <input type="text" name="assignment_name" id="nameInput" class="validate" data-length="32" value="<%= assignment_name%>" required>
+                            <input type="text" name="name" id="nameInput" class="validate" data-length="32" value="<%= item%>" required>
                         </div>
                         <div class="input-field col s6">
-                            <label for="classInput">Assignment Class:</label>
-                            <input type="text" name="assignment_class" id="classInput" value=<%= assignment_class%> required>
+                            <label for="classNameInput">Class Name:</label>
+                            <input type="number" name="quantity" id="quantityInput" value=<%= quantity%> required>
                         </div>
                         <div class="input-field col s6">
-                            <label for="classInput">Due Date:</label>
-                            <input type="text" name="assignment_date" id="dateInput" value=<%= assignment_date%> required>
+                            <label for="dueDateInput">Due Date:</label>
+                            <input type="text" name="description" id="descriptionInput" data-length="100" value="<%= description%>">
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <label for="descriptionInput">Assignment Description:</label>
-                            <input type="text" name="assignment_description" id="descriptionInput" data-length="100" value="<%= assignment_description%>">
+                            <input type="text" name="description" id="descriptionInput" data-length="100">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn waves-effect waves-light " type="submit"><i
-                                class="material-icons right">send</i>Submit</button>
-
-                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Never Mind</a>
+                        <button class="btn waves-effect waves-light " type="submit">
+                            <i class="material-icons right">send</i>
+                            Submit
+                        </button>
+                        <button class="modal-close waves-effect waves-green btn-flat">Never Mind</button>
                     </div>
                 </form>
             </div>
