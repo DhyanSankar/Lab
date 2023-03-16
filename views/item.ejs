@@ -8,12 +8,39 @@
         
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <script src="/javascripts/materialize.min.js"></script>
     
     <link rel="stylesheet" href="/stylesheets/stuffStyle.css">
 </head>
 <body>
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo">Stuff Manager</a>
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="desktop-nav" class="right hide-on-med-and-down">
+                    <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
+                    <li><a href="/stuff"><i class="material-icons left">list</i>Inventory</a></li>
+                    <% if (isLoggedIn) { %>
+                        <li><a href="/profile"><i class="material-icons left">person</i> Hello, <%=user.name%></a> </li>
+                        <li><a href="/logout" class="btn red">Logout</a></li>                        
+                    <% } else { %>
+                        <li><a href="/login" class="btn blue">Login</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+        <ul id="mobile-nav" class="sidenav">
+             <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
+             <li><a href="/stuff"><i class="material-icons left">list</i>Inventory</a></li>
+             <% if (isLoggedIn) { %>
+                <li><a href="/profile"><i class="material-icons left">person</i> Hello, <%=user.name%></a> </li>
+                <li><a href="/logout" class="btn red">Logout</a></li>                        
+            <% } else { %>
+                <li><a href="/login" class="btn blue">Login</a></li>
+            <% } %>
+        </ul>
+    </header>
+    </header>
     <div class="container">
         <h1>Assignment Details:</h1>
         <a class="btn-small waves-effect waves-light" href="/stuff">
@@ -81,8 +108,11 @@
 
         </div>
     </div>
-    
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <!-- initialize Materialize elements -->
-    <script> M.AutoInit();</script>
+    <script src="/scripts/materializeAutoinit.js"></script>
+
 </body>
 </html>

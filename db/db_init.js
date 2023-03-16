@@ -11,17 +11,17 @@ db.execute(delete_stuff_table_sql);
 
 const insert_stuff_table_sql = `
     INSERT INTO stuff 
-        (assignment_name, assignment_class, assignment_date, assignment_description) 
+        (assignment_name, assignment_class, assignment_date, assignment_description, user_id) 
     VALUES 
-        (?, ?, ?, ?);
+        (?, ?, ?, ?, ?);
 `
-db.execute(insert_stuff_table_sql, ['Assignment 1', 'AP Comp Sci', '2023-01-31', 'idk1']);
+db.execute(insert_stuff_table_sql, ['Assignment 1', 'AP Comp Sci', '2023-01-31', 'idk1', 'dhyansankar007@gmail.com']);
 
-db.execute(insert_stuff_table_sql, ['Assignment 2', 'AP Comp Sci', '2023-01-31', 'idk2']);
+db.execute(insert_stuff_table_sql, ['Assignment 2', 'AP Comp Sci', '2023-01-31', 'idk2', 'dhyansankar007@gmail.com']);
 
-db.execute(insert_stuff_table_sql, ['Assignment 3', 'AP Comp Sci', '2023-01-31', 'idk3']);
+db.execute(insert_stuff_table_sql, ['Assignment 3', 'AP Comp Sci', '2023-01-31', 'idk3', 'dhyansankar007@gmail.com']);
 
-db.execute(insert_stuff_table_sql, ['Assignment 4', 'AP Comp Sci', '2023-01-31', 'idk4']);
+db.execute(insert_stuff_table_sql, ['Assignment 4', 'AP Comp Sci', '2023-01-31', 'idk4', 'dhysan25@bergen.org']);
 
 
 /**** Read the sample items inserted ****/
