@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const { auth } = require('express-openid-connect');
 const { requiresAuth } = require('express-openid-connect');
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -68,47 +68,122 @@ app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
 });
 
-// define a route for the stuff inventory page
-const read_stuff_all_sql = `
+
+// define a route for the subjects inventory page
+const read_subjects_all_sql = `
     SELECT 
-        assignment_id, assignment_name, assignment_class, assignment_date
+        subject_id, subject_name
     FROM
-        stuff
+        subjects
     WHERE 
-        user_id = ?
+        subjects.user_id = ?
 `
-app.get( "/stuff", requiresAuth(), ( req, res ) => {
-    db.execute(read_stuff_all_sql, [req.oidc.user.email], (error, results) => {
+app.get( "/subjects", requiresAuth(), ( req, res ) => {
+    db.execute(read_subjects_all_sql, [req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
-            res.render('stuff', { inventory: results });
+            res.render('subjects', { inventory: results });
         }
     });
 });
 
-// define a route for the item detail page
-const read_stuff_item_sql = `
-    SELECT 
-        assignment_id, assignment_name, assignment_class, assignment_date, assignment_description 
+
+// define a route for item CREATE
+const create_subject_sql = `
+    INSERT INTO subjects
+        (subject_name, user_id)
+    VALUES
+        (?, ?)
+`
+app.post("/subjects", requiresAuth(), (req, res) => {
+    db.execute(create_subject_sql, [req.body.subject_name, req.oidc.user.email], (error, results) => {
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            //results.insertId has the primary key (id) of the newly inserted element.
+            res.redirect(`/subjects`);
+        }
+    });
+})
+
+const delete_subject_sql = `
+    DELETE 
     FROM
-        stuff
+        subjects
     WHERE
-        assignment_id = ?
+        subject_id = ?
     AND
         user_id = ?
 `
-app.get( "/stuff/item/:assignment_id", requiresAuth(), ( req, res ) => {
-    db.execute(read_stuff_item_sql, [req.params.assignment_id, req.oidc.user.email], (error, results) => {
+app.get("/subjects/item/:subject_id/delete", requiresAuth(), ( req, res ) => {
+    db.execute(delete_subject_sql, [req.params.subject_id, req.oidc.user.email], (error, results) => {
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            res.redirect("/subjects");
+        }
+    });
+})
+
+// define a route for the assignments inventory page
+const read_assignments_all_sql = `
+    SELECT 
+        assignment_id, assignment_name, subject_name, assignments.subject_id as subject_id, DATE_FORMAT(assignment_date, "%m/%d/%Y (%W)") AS assignment_date
+    FROM
+        assignments
+    JOIN subjects
+        ON assignments.subject_id = subjects.subject_id
+    WHERE 
+        assignments.user_id = ?
+`
+app.get("/assignments", requiresAuth(), ( req, res ) => {
+    db.execute(read_assignments_all_sql, [req.oidc.user.email], (error, results) => {
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+            else {
+                db.execute(read_subjects_all_sql, [req.oidc.user.email], (error2, all_subjects) => {
+                    if (error2)
+                        res.status(500).send(error2); //Internal Server Error
+                    else {
+                        let data = {hwlist: results, subjectlist: all_subjects};
+                        res.render('assignments', data); 
+                    }
+                });
+            }
+    });
+});
+
+// define a route for the item detail page
+const read_assignments_item_sql = `
+    SELECT 
+        assignment_id, assignment_name, subject_name, assignments.subject_id as subject_id, DATE_FORMAT(assignment_date, "%m/%d/%Y (%W)") AS assignment_date, assignment_description 
+    FROM
+        assignments
+    JOIN subjects
+        ON assignments.subject_id = subjects.subject_id
+    WHERE
+        assignment_id = ?
+    AND
+        assignments.user_id = ?
+`
+app.get( "/assignments/item/:assignment_id", requiresAuth(), ( req, res ) => {
+    db.execute(read_assignments_item_sql, [req.params.assignment_id, req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else if (results.length == 0)
             res.status(404).send(`No item found with assignment_id = "${req.params.assignment_id}"`); // NOT FOUND
         else {
-            let data = results[0]; // results is still an array
-            // data's object structure: 
-            //  { assignment_id: ____, assignment_name: ___ , assignment_class:___ , assignment_description: ____ }
-            res.render('item', data);
+            db.execute(read_subjects_all_sql, [req.oidc.user.email], (error2, all_subjects) => {
+                if (error2)
+                    res.status(500).send(error2); //Internal Server Error
+                else {
+                    console.log(results);
+                    console.log(all_subjects);
+                    let data = {hwlist: results[0], subjectlist: all_subjects};
+                    res.render('item', data);
+                }
+            });
         }
     });
 });
@@ -117,18 +192,18 @@ app.get( "/stuff/item/:assignment_id", requiresAuth(), ( req, res ) => {
 const delete_item_sql = `
     DELETE 
     FROM
-        stuff
+        assignments
     WHERE
         assignment_id = ?
     AND
         user_id = ?
 `
-app.get("/stuff/item/:assignment_id/delete", requiresAuth(), ( req, res ) => {
+app.get("/assignments/item/:assignment_id/delete", requiresAuth(), ( req, res ) => {
     db.execute(delete_item_sql, [req.params.assignment_id, req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
-            res.redirect("/stuff");
+            res.redirect("/assignments");
         }
     });
 })
@@ -136,10 +211,10 @@ app.get("/stuff/item/:assignment_id/delete", requiresAuth(), ( req, res ) => {
 // define a route for item UPDATE
 const update_item_sql = `
     UPDATE
-        stuff
+        assignments
     SET
         assignment_name = ?,
-        assignment_class = ?,
+        subject_id = ?,
         assignment_date = ?,
         assignment_description = ?
     WHERE
@@ -147,30 +222,30 @@ const update_item_sql = `
     AND
         user_id = ?
 `
-app.post("/stuff/item/:assignment_id", requiresAuth(), (req, res) => {
-    db.execute(update_item_sql, [req.body.assignment_name, req.body.assignment_class, req.body.assignment_date, req.body.assignment_description, req.params.assignment_id, req.oidc.user.email], (error, results) => {
+app.post("/assignments/item/:assignment_id", requiresAuth(), (req, res) => {
+    db.execute(update_item_sql, [req.body.assignment_name, req.body.subject_id, req.body.assignment_date, req.body.assignment_description, req.params.assignment_id, req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
-            res.redirect(`/stuff/item/${req.params.assignment_id}`);
+            res.redirect(`/assignments/item/${req.params.assignment_id}`);
         }
     });
 })
 
 // define a route for item CREATE
 const create_item_sql = `
-    INSERT INTO stuff
-        (assignment_name, assignment_class, assignment_date, assignment_description, user_id)
+    INSERT INTO assignments
+        (assignment_name, subject_id, assignment_date, assignment_description, user_id)
     VALUES
         (?, ?, ?, ?, ?)
 `
-app.post("/stuff", requiresAuth(), (req, res) => {
-    db.execute(create_item_sql, [req.body.assignment_name, req.body.assignment_class, req.body.assignment_date, req.body.assignment_description, req.oidc.user.email], (error, results) => {
+app.post("/assignments", requiresAuth(), (req, res) => {
+    db.execute(create_item_sql, [req.body.assignment_name, req.body.subject_id, req.body.assignment_date, req.body.assignment_description, req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
             //results.insertId has the primary key (id) of the newly inserted element.
-            res.redirect(`/stuff/item/${results.insertId}`);
+            res.redirect(`/assignments/item/${results.insertId}`);
         }
     });
 })

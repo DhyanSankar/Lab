@@ -12,51 +12,28 @@
     <link rel="stylesheet" href="/stylesheets/stuffStyle.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="/" class="brand-logo">Stuff Manager</a>
-                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <ul id="desktop-nav" class="right hide-on-med-and-down">
-                    <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
-                    <li><a href="/stuff"><i class="material-icons left">list</i>Inventory</a></li>
-                    <% if (isLoggedIn) { %>
-                        <li><a href="/profile"><i class="material-icons left">person</i> Hello, <%=user.name%></a> </li>
-                        <li><a href="/logout" class="btn red">Logout</a></li>                        
-                    <% } else { %>
-                        <li><a href="/login" class="btn blue">Login</a></li>
-                    <% } %>
-                </ul>
-            </div>
-        </nav>
-        <ul id="mobile-nav" class="sidenav">
-             <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
-             <li><a href="/stuff"><i class="material-icons left">list</i>Inventory</a></li>
-             <% if (isLoggedIn) { %>
-                <li><a href="/profile"><i class="material-icons left">person</i> Hello, <%=user.name%></a> </li>
-                <li><a href="/logout" class="btn red">Logout</a></li>                        
-            <% } else { %>
-                <li><a href="/login" class="btn blue">Login</a></li>
-            <% } %>
-        </ul>
-    </header>
-    </header>
+
+    <%- include('partials/navbar') %>
+    
     <div class="container">
         <h1>Assignment Details:</h1>
-        <a class="btn-small waves-effect waves-light" href="/stuff">
+        <a class="btn-small waves-effect waves-light" href="/assignments">
             <i class="material-icons left">arrow_back</i>
             Return to assignment list
         </a>
         <table class="striped highlight">
             <tbody>
                 <tr>
-                    <th>Assignment:</th><td><%= assignment_name %></td>
+                    <th>Assignment:</th><td><%= hwlist.assignment_name %></td>
                 </tr>
                 <tr>
-                    <th>Class:</th><td><%= assignment_class %></td>
+                    <th>Class:</th><td><%= hwlist.subject_name %></td>
                 </tr>
                 <tr>
-                    <th>Due Date:</th><td><%= assignment_date %></td>
+                    <th>Due Date:</th><td><%= hwlist.assignment_date %></td>
+                </tr>
+                <tr>
+                    <th>Description:</th><td><%= hwlist.assignment_description %></td>
                 </tr>
             </tbody>
         </table>
@@ -65,7 +42,7 @@
             <a class="btn-large waves-effect waves-light orange left modal-trigger" href="#stuffEdit">
                 <i class="material-icons right">edit</i>Edit
             </a>
-            <a class="btn-large waves-effect waves-light red right"  href="/stuff/item/<%= assignment_id %>/delete" %>>
+            <a class="btn-large waves-effect waves-light red right"  href="/assignments/item/<%= hwlist.assignment_id %>/delete" %>>
                 <i class="material-icons right">delete</i>Delete
             </a>
         </div>
@@ -76,25 +53,31 @@
             <div class="modal-content">
 
                 <h2>Edit item:</h2>
-                <form method="post" action="/stuff/item/<%= assignment_id%>"> <!-- default action is the page's URL --> 
+                <form method="post" action="/assignments/item/<%= hwlist.assignment_id%>"> <!-- default action is the page's URL --> 
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="nameInput">Assignment Name:</label>
-                            <input type="text" name="assignment_name" id="nameInput" class="validate" data-length="32" value="<%= assignment_name%>" required>
+                            <input type="text" name="assignment_name" id="nameInput" class="validate" data-length="32" value="<%= hwlist.assignment_name%>" required>
                         </div>
                         <div class="input-field col s6">
-                            <label for="classInput">Assignment Class:</label>
-                            <input type="text" name="assignment_class" id="classInput" value=<%= assignment_class%> required>
+
+                            <select id="classNameInput" name="subject_id" required>
+                                <option value="" disabled selected>Choose your subject</option>
+                                <% for (let i = 0; i < subjectlist.length; i++) { %>
+                                    <option value=<%=subjectlist[i].subject_id %>><%= subjectlist[i].subject_name %></option>
+                                <% } %>
+                            </select>
+                            <label for="classNameInput">Subject:</label>
                         </div>
                         <div class="input-field col s6">
                             <label for="classInput">Due Date:</label>
-                            <input type="text" name="assignment_date" id="dateInput" value=<%= assignment_date%> required>
+                            <input type="text" name="assignment_date" id="dueDateInput" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <label for="descriptionInput">Assignment Description:</label>
-                            <input type="text" name="assignment_description" id="descriptionInput" data-length="100" value="<%= assignment_description%>">
+                            <input type="text" name="assignment_description" id="descriptionInput" data-length="100" value="<%= hwlist.assignment_description%>">
                         </div>
                     </div>
                     <div class="modal-footer">

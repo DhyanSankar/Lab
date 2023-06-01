@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Manager</title>
+
+    <link rel="stylesheet" href="stylesheets/materialize.min.css">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="/stylesheets/stuffStyle.css">
+</head>
+<body>
+    
+    <%- include('partials/navbar') %>
+
+    <div class="container">
+        <h1>Subjects:</h1>
+        <a class="waves-effect waves-light btn" href="/">
+            <i class="material-icons left">arrow_back</i>
+            Return to home page
+        </a>
+            <table class="striped highlight centered">
+                <thead>
+                <tr>
+                    <th>Subject Name</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <% for (let i = 0; i < inventory.length; i++) { %>
+                    <tr>
+                        <td><%= inventory[i].subject_name %></td>
+                        <td>
+                            <a class="btn-small waves-effect waves-light red" href="/subjects/item/<%= inventory[i].subject_id %>/delete">
+                                <i class="material-icons right">delete</i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <h1>Add Subjects:</h1>
+        <div class="row">
+            <form method="post" action="/subjects">
+                <div class="row">
+                    <div class="input-field col s4">
+                        <label for="nameInput">Subject Name:</label>
+                        <input type="text" name="subject_name" id="name" class="validate" data-length="32">
+                    </div>
+                </div>
+                
+                <button class="btn-small waves-effect waves-light" type="submit">
+                    Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+       
+    </div>
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- initialize Materialize elements -->
+    <script src="/scripts/materializeAutoinit.js"></script>
+</body>
+</html>

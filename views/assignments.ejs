@@ -13,34 +13,9 @@
     <link rel="stylesheet" href="/stylesheets/stuffStyle.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="/" class="brand-logo">Stuff Manager</a>
-                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <ul id="desktop-nav" class="right hide-on-med-and-down">
-                    <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
-                    <li><a href="/stuff"><i class="material-icons left">list</i>Inventory</a></li>
-                    <% if (isLoggedIn) { %>
-                        <li><a href="/profile"><i class="material-icons left">person</i> Hello, <%=user.name%></a> </li>
-                        <li><a href="/logout" class="btn red">Logout</a></li>                        
-                    <% } else { %>
-                        <li><a href="/login" class="btn blue">Login</a></li>
-                    <% } %>
-                </ul>
-            </div>
-        </nav>
-        <ul id="mobile-nav" class="sidenav">
-             <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
-             <li><a href="/stuff"><i class="material-icons left">list</i>Inventory</a></li>
-             <% if (isLoggedIn) { %>
-                <li><a href="/profile"><i class="material-icons left">person</i> Hello, <%=user.name%></a> </li>
-                <li><a href="/logout" class="btn red">Logout</a></li>                        
-            <% } else { %>
-                <li><a href="/login" class="btn blue">Login</a></li>
-            <% } %>
-        </ul>
-    </header>
+    
+    <%- include('partials/navbar') %>
+
     <div class="container">
         <h1>Assignments:</h1>
         <a class="waves-effect waves-light btn" href="/">
@@ -57,15 +32,15 @@
                 </thead>
 
                 <tbody>
-                    <% for (let i = 0; i < inventory.length; i++) { %>
+                    <% for (let i = 0; i < hwlist.length; i++) { %>
                     <tr>
-                        <td><%= inventory[i].assignment_name %></td>
-                        <td><%= inventory[i].assignment_class %></td>
-                        <td><%= inventory[i].assignment_date %></td>
+                        <td><%= hwlist[i].assignment_name %></td>
+                        <td><%= hwlist[i].subject_name %></td>
+                        <td><%= hwlist[i].assignment_date %></td>
                         <td>
-                            <a class="btn-small waves-effect waves-light" href=<%= "/stuff/item/" + inventory[i].assignment_id %> ><i
+                            <a class="btn-small waves-effect waves-light" href=<%= "/assignments/item/" + hwlist[i].assignment_id %> ><i
                                     class="material-icons right">edit</i>Info/Edit</a>
-                            <a class="btn-small waves-effect waves-light red" href="/stuff/item/<%= inventory[i].assignment_id %>/delete">
+                            <a class="btn-small waves-effect waves-light red" href="/assignments/item/<%= hwlist[i].assignment_id %>/delete">
                                 <i class="material-icons right">delete</i>
                                 Delete
                             </a>
@@ -76,19 +51,24 @@
             </table>
         <h1>Add Assignments:</h1>
         <div class="row">
-            <form method="post" action="/stuff">
+            <form method="post" action="/assignments">
                 <div class="row">
                     <div class="input-field col s4">
                         <label for="nameInput">Assignment Name:</label>
                         <input type="text" name="assignment_name" id="name" class="validate" data-length="32">
                     </div>
                     <div class="input-field col s4">
-                        <label for="classNameInput">Class Name:</label>
-                        <input type="text" name="assignment_class" id="classNameInput">
+                        <select id="classNameInput" name="subject_id" required>
+                            <option value="" disabled selected>Choose your subject</option>
+                            <% for (let i = 0; i < subjectlist.length; i++) { %>
+                                <option value=<%=subjectlist[i].subject_id %>><%= subjectlist[i].subject_name %></option>
+                            <% } %>
+                        </select>
+                        <label for="classNameInput">Subject:</label>
                     </div>
                     <div class="input-field col s4">
                         <label for="dueDateInput">Due Date:</label>
-                        <input type="text" name="assignment_date" class="datepicker" id="dueDateInput">
+                        <input type="text" name="assignment_date" id="dueDateInput">
                     </div>
                 </div>
                 <div class="row">
